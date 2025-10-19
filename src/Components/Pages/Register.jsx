@@ -1,19 +1,32 @@
-import React, { use } from 'react';
+import React, { use, useState } from 'react';
 import { Link } from 'react-router';
 import { AuthContext } from '../../Provider/Authprovider';
 
 const Register = () => {
-  const {createUser, setUser} = use(AuthContext);
+  const {createUser, setUser , updateUser} = use(AuthContext);
+  const [nameError, setNameError] = useState("");
   const handleRegister = (e)=>{
     e.preventDefault();
     const name = e.target.name.value;
+    if(name.length< 5){
+      setNameError("Name should be more than five character")
+      return;
+    }else{
+      setNameError("");
+    }
     const photo = e.target.photo.value;
     const email = e.target.email.value;
     const password = e.target.password.value;
     createUser(email, password)
     .then(result =>{
       const user = result.user;
-      setUser(user)
+      updateUser({displayName : name, photoURL : photo}).theb(()=>{
+        setUser({...user, displayName : name, photoURL : photo})
+      })
+      .catch(error =>{
+        console.log(error)
+        setUser(user);
+      })
     })
     .catch(error =>{
       const errorCode = error.code;

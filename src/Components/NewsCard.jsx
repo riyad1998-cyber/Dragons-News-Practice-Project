@@ -1,10 +1,12 @@
 import React from "react";
 import { FaRegBookmark, FaShareAlt } from "react-icons/fa";
 import { AiFillStar } from "react-icons/ai";
+import { Link } from "react-router";
 
 const NewsCard = ({ news }) => {
   const {
     title,
+    id,
     author,
     rating,
     total_view,
@@ -13,6 +15,7 @@ const NewsCard = ({ news }) => {
     published_date,
   } = {
     title: news.title,
+    id: news.id,     
     author: news.author,
     rating: news.rating,
     total_view: news.total_view,
@@ -70,9 +73,9 @@ const NewsCard = ({ news }) => {
         {details.length > 200 ? (
           <>
             {details.slice(0, 200)}...{" "}
-            <span className="text-primary cursor-pointer font-medium">
+            <Link to= {`/news-detail/${id}`} className="text-primary cursor-pointer font-medium">
               Read More
-            </span>
+            </Link>
           </>
         ) : (
           details
